@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NavigationView</string>
+    <string name="menu_map">マップ</string>
+    <string name="menu_ar">AR</string>
+    <string name="menu_log">履歴</string>
+    <string name="menu_other">その他</string>
+    <string name="menu_about">このアプリについて</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+</resources>

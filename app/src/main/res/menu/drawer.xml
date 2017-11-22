@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group >
+        <item
+            android:id="@+id/menu_map"
+            android:title="@string/menu_map"
+            android:icon="@drawable/ic_add_location_black_24dp"/>
+        <item
+            android:id="@+id/menu_ar"
+            android:title="@string/menu_ar"
+            android:icon="@drawable/ic_find_replace_black_24dp"/>
+        <item
+            android:id="@+id/menu_log"
+            android:title="@string/menu_log"
+            android:icon="@drawable/ic_chrome_reader_mode_black_24dp"/>
+    </group>
+    <item
+        android:title="@string/menu_other">
+        <menu>
+            <item
+                android:id="@+id/menu_other"
+                android:title="@string/menu_other"/>
+            <item
+                android:id="@+id/menu_about"
+                android:title="@string/menu_about"/>
+        </menu>
+    </item>
+</menu>
