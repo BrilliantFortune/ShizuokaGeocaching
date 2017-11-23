@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 
 /**
- * Created by right on 2017/11/22.
+ * Created by right on 2017/11/23.
  */
-class RootFragment : Fragment(){
+class LogFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_root, container, false)
+        return inflater.inflate(R.layout.fragment_log, container, false)
     }
 }
