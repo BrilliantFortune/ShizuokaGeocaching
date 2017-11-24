@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                     .commit()
         }
 
+        //ナビゲーションペインの設定
         nvView.setNavigationItemSelectedListener {
             var fragment: android.support.v4.app.Fragment? = null
 
