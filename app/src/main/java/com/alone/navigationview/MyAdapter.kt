@@ -9,7 +9,7 @@ import android.view.ViewGroup
  */
 class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    //コンストラクタ
     }
 
     override fun getItemCount(): Int {
