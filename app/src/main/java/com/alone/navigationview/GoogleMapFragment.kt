@@ -67,10 +67,10 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
                         break
                     val st = StringTokenizer(line, ",")
                     val color = Mapcolor(st.nextToken())
-                    val tit = st.nextToken()
+                    val tit:String = st.nextToken()
                     val lat = LatLng(st.nextToken().toDouble(), st.nextToken().toDouble())
                     //マーカーの作成
-                    //map?.addMarker(MarkerOptions().position(lat).title(tit))
+                    map?.addMarker(MarkerOptions().position(lat).title(tit))
                     //円の作成
                     map?.addCircle(CircleOptions().center(lat).radius(200.0).strokeWidth(3.0f).strokeColor(color.sc).fillColor(color.fc))
                 }
