@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.cardview.view.*
  * Created by right on 2017/11/23.
  */
 class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+
     var logList : List<LogData> = emptyList()
 
     override fun getItemCount(): Int {
