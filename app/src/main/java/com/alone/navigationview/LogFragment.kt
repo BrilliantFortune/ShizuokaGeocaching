@@ -2,6 +2,8 @@ package com.alone.navigationview
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,16 @@ class LogFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val list = arrayListOf(
+                LogData("雲見浅間神社", "賀茂郡松崎町雲見386-2", "2017/11/15"),
+                LogData("久能山東照宮", "静岡市駿河区根古屋390", "2017/11/20")
+        )
+
+        val adapter = MyAdapter()
+        adapter.logList = list
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(context)
 
         rv.setHasFixedSize(true)
     }
