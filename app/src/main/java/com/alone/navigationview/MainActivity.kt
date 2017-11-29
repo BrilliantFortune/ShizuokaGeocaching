@@ -8,6 +8,7 @@ import com.google.android.gms.maps.MapFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                     .add(R.id.content, mapFragment)
                     .commit()
         }
+
 
         //ナビゲーションペインの設定
         nvView.setNavigationItemSelectedListener {
