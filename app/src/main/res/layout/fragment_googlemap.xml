@@ -11,5 +11,6 @@
     map:cameraZoom="15"
     map:cameraTargetLat="34.711614"
     map:cameraTargetLng="137.728506"
+    map:uiZoomControls="true"
     >
 </fragment>
