@@ -53,7 +53,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
 
 
         val assetmanager : AssetManager = this.context.resources.assets
-        val subfiles = assetmanager.list("")
+        val subfiles = assetmanager.list("csv")
         //main\\assets内のファイル読み込み
         try {
             for (i in subfiles!!.indices) {
