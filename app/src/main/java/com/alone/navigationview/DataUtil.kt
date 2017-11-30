@@ -8,7 +8,8 @@ import java.io.*
  * Created by right on 2017/11/30.
  */
 class DataUtil(val context: Context) {
-    fun store(logData: List<LogData>) {
+
+    fun write(logData: MutableList<LogData>) {
         try {
             val out = ObjectOutputStream(context.openFileOutput("log_data.dat", Context.MODE_PRIVATE))
             out.writeObject(logData)
@@ -19,12 +20,12 @@ class DataUtil(val context: Context) {
         }
     }
 
-    fun read() :List<LogData> {
-        var logData: List<LogData> = emptyList()
+    fun read() :MutableList<LogData> {
+        var logData: MutableList<LogData> = mutableListOf()
         try {
             val input = ObjectInputStream(context.openFileInput("log_data.dat"))
             @Suppress("UNCHECKED_CAST")
-            logData = input.readObject() as List<LogData>
+            logData = input.readObject() as MutableList<LogData>
         } catch (e: IOException) {
 
         } catch (e: ClassNotFoundException) {
