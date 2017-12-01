@@ -10,6 +10,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_log.*
 import android.app.Fragment
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.regex.Pattern
 
 /**
  * Created by right on 2017/11/23.
@@ -23,14 +31,15 @@ class LogFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*val list = arrayListOf(
-                LogData("雲見浅間神社", "賀茂郡松崎町雲見386-2", "2017/11/15"),
-                LogData("久能山東照宮", "静岡市駿河区根古屋390", "2017/11/20"),
-                LogData("てすと", "てすと", "てすと")
-        )*/
-
         val dataUtil = DataUtil(context)
-        val list = dataUtil.read()
+        var list = dataUtil.read()
+
+        if (list.isEmpty()) {
+            list = arrayListOf(
+                    LogData("雲見浅間神社", "賀茂郡松崎町雲見386-2", "2017/11/15"),
+                    LogData("久能山東照宮", "静岡市駿河区根古屋390", "2017/11/20")
+            )
+        }
 
         val adapter = MyAdapter()
         adapter.logList = list
@@ -56,13 +65,6 @@ class LogFragment : Fragment() {
             }
         })
 
-        button.setOnClickListener {
-            adapter.logList.add(
-                    LogData("てすと", "てすと", list.size.toString())
-            )
-            adapter.notifyItemInserted(adapter.logList.size)
-        }
-
         adapter.setHasStableIds(true)
 
         helper.attachToRecyclerView(rv)
@@ -70,5 +72,10 @@ class LogFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(context)
 
         rv.setHasFixedSize(true)
+
+        if (arguments != null) {
+            list.add(arguments.getSerializable("log") as LogData)
+            list.distinct()
+        }
     }
 }

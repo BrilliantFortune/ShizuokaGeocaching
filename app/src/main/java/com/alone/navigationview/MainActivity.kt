@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.PermissionChecker
 import android.support.v7.app.ActionBarDrawerToggle
+import android.widget.Toast
 import com.google.android.gms.maps.MapFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -33,11 +34,12 @@ class MainActivity : AppCompatActivity() {
         drawerToggle.syncState()
 
         if (savedInstanceState == null) {
-            if (intent.hasExtra("id")) {
-                val id = intent.getStringExtra("id")
+            if (intent.hasExtra("log")) {
+                val log = intent.getSerializableExtra("log")
                 val fragment = LogFragment()
                 val args = Bundle()
-                args.putString("id", id)
+                args.putSerializable("log", log)
+                //Toast.makeText(applicationContext, (log as LogData).title, Toast.LENGTH_SHORT).show()
                 fragment.arguments = args
                 fragmentManager.beginTransaction()
                         .add(R.id.content, fragment)

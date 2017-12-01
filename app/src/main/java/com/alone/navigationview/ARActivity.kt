@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import eu.kudan.kudan.*
 import eu.kudan.kudan.ARActivity
 import kotlinx.android.synthetic.main.activity_ar.*
@@ -12,11 +13,14 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.sp
 import org.jetbrains.anko.uiThread
 import java.io.*
 import java.net.Socket
 import java.net.SocketTimeoutException
 import java.nio.charset.Charset
+import java.util.*
+import java.util.regex.Pattern
 
 class ARActivity : ARActivity(), ARImageTrackableListener {
     private val HOST = "192.168.3.20"
@@ -56,8 +60,10 @@ class ARActivity : ARActivity(), ARImageTrackableListener {
             doAsync {
                 result = receiveMessage()
                 uiThread {
+                    //android.os.Debug.waitForDebugger()
                     val i = Intent(applicationContext, MainActivity::class.java)
-                    i.putExtra("id", result)
+                    val log = searchLogId(result)
+                    i.putExtra("log", log)
                     startActivity(i)
                 }
             }
@@ -93,5 +99,42 @@ class ARActivity : ARActivity(), ARImageTrackableListener {
             e.stackTrace
         }
         return result
+    }
+
+    private fun searchLogId(result : String) : LogData {
+
+        val splited = result.split("\n")
+        val id = splited[1]
+
+        var log = LogData("", "", "")
+        val assetManager = applicationContext.resources.assets
+        try {
+            val istream = assetManager.open("csv/id.csv")
+            val br = BufferedReader(InputStreamReader(istream))
+            var line = br.readLine()
+            while (line != null) {
+                val p = Pattern.compile(splited[1])
+                val m = p.matcher(line)
+                if (m.find()) {
+                    val st = StringTokenizer(line, ",")
+                    val t = st.nextToken()
+                    val date = android.text.format.DateFormat.format("yyyy/MM/dd", Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"), Locale.JAPAN))
+                    log = LogData(
+                            title = st.nextToken(),
+                            location = st.nextToken(),
+                            time = date.toString()
+                    )
+                    break
+                }
+                line = br.readLine()
+            }
+            istream.close()
+            br.close()
+
+            Toast.makeText(applicationContext, log.title, Toast.LENGTH_SHORT).show()
+        } catch (e : IOException) {
+            e.stackTrace
+        }
+        return log
     }
 }
