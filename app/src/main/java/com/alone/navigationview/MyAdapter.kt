@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.cardview.view.*
+import java.util.*
 
 /**
  * Created by right on 2017/11/23.
  */
 class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
-    var logList : List<LogData> = emptyList()
+    var logList : MutableList<LogData> = mutableListOf()
+
+    override fun getItemId(position: Int): Long {
+        return logList[position].hashCode().toLong()
+    }
 
     override fun getItemCount(): Int {
         return logList.size

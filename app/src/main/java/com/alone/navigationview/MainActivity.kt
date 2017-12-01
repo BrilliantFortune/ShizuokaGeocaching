@@ -1,8 +1,13 @@
 package com.alone.navigationview
 
+import android.Manifest
 import android.app.Fragment
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.PermissionChecker
 import android.support.v7.app.ActionBarDrawerToggle
 import com.google.android.gms.maps.MapFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 
 class MainActivity : AppCompatActivity() {
+    val PERMISSION_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +33,28 @@ class MainActivity : AppCompatActivity() {
         drawerToggle.syncState()
 
         if (savedInstanceState == null) {
-            val mapFragment = GoogleMapFragment()
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.content, mapFragment)
-                    .commit()
-        }
+            if (intent.hasExtra("id")) {
+                val id = intent.getStringExtra("id")
+                val fragment = LogFragment()
+                val args = Bundle()
+                args.putString("id", id)
+                fragment.arguments = args
+                fragmentManager.beginTransaction()
+                        .add(R.id.content, fragment)
+                        .commit()
+                toolbar.title = getString(R.string.menu_log)
+            } else {
+                val mapFragment = GoogleMapFragment()
+                fragmentManager.beginTransaction()
+                        .add(R.id.content, mapFragment)
+                        .commit()
+            }
 
+        }
 
         //ナビゲーションペインの設定
         nvView.setNavigationItemSelectedListener {
-            var fragment: android.support.v4.app.Fragment? = null
+            var fragment: Fragment? = null
 
             when (it.itemId) {
                 R.id.menu_map -> {
@@ -44,8 +62,8 @@ class MainActivity : AppCompatActivity() {
                     toolbar.title = getString(R.string.menu_map)
                 }
                 R.id.menu_ar -> {
-                    fragment = ARFragment()
-                    toolbar.title = getString(R.string.menu_ar)
+                    val intent = Intent(this, ARActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.menu_log -> {
                     fragment = LogFragment()
@@ -61,14 +79,40 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.content, fragment)
-                    .commit()
+            if (fragment != null) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content, fragment)
+                        .commit()
+            }
 
             //ドロワーを閉じる
             drawer_layout.closeDrawers()
 
             true
+        }
+
+        val permissions = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE
+        )
+
+        val requestPermissions = mutableListOf<String>()
+
+        for (permission in permissions) {
+            if (PermissionChecker.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions.add(permission)
+            }
+        }
+
+        if (requestPermissions.isNotEmpty()) {
+            if (Build.VERSION.SDK_INT > 23) {
+                requestPermissions(requestPermissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:name="com.google.android.gms.maps.MapFragment"
     map:uiCompass="true"
     map:cameraZoom="15"
     map:cameraTargetLat="34.711614"
