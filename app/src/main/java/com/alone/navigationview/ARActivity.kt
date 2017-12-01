@@ -65,6 +65,7 @@ class ARActivity : ARActivity(), ARImageTrackableListener {
                     val log = searchLogId(result)
                     i.putExtra("log", log)
                     startActivity(i)
+                    socket = null
                 }
             }
         }
