@@ -1,12 +1,27 @@
 package com.alone.navigationview
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import eu.kudan.kudan.*
 import eu.kudan.kudan.ARActivity
+import kotlinx.android.synthetic.main.activity_ar.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.io.*
+import java.net.Socket
+import java.net.SocketTimeoutException
+import java.nio.charset.Charset
 
 class ARActivity : ARActivity(), ARImageTrackableListener {
+    private val HOST = "192.168.3.20"
+    private val PORT = 4869
+    private var socket : Socket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,13 +35,13 @@ class ARActivity : ARActivity(), ARImageTrackableListener {
         super.setup()
 
         val imageTrackable = ARImageTrackable("Marker")
-        imageTrackable.loadFromAsset("maker.png")
+        imageTrackable.loadFromAsset("images/marker.png")
 
         val imageTracker = ARImageTracker.getInstance()
         imageTracker.initialise()
         imageTracker.addTrackable(imageTrackable)
 
-        val imageNode = ARImageNode("apper.png")
+        val imageNode = ARImageNode("images/apper.png")
 
         imageTrackable.world.addChild(imageNode)
 
@@ -34,14 +49,49 @@ class ARActivity : ARActivity(), ARImageTrackableListener {
     }
 
     override fun didDetect(p0: ARImageTrackable?) {
-        Log.d("Maker", "見つけたぞ！！！！！")
+        Log.d("Marker", "見つけたぞ！！！！！")
+
+        if (socket == null) {
+            var result = ""
+            doAsync {
+                result = receiveMessage()
+                uiThread {
+                    val i = Intent(applicationContext, MainActivity::class.java)
+                    i.putExtra("id", result)
+                    startActivity(i)
+                }
+            }
+        }
     }
 
     override fun didLose(p0: ARImageTrackable?) {
-        Log.d("Maker", "見失いました…")
+        Log.d("Marker", "見失いました…")
     }
 
     override fun didTrack(p0: ARImageTrackable?) {
-        Log.d("Maker", "ストーキング中")
+        //Log.d("Maker", "ストーキング中")
+    }
+
+    private fun receiveMessage() : String {
+        socket = Socket(HOST, PORT)
+
+        var result = ""
+
+        try {
+            val pw = PrintWriter(socket?.getOutputStream(), true)
+            pw.println("Hello")
+
+            val istream = socket?.getInputStream()
+            val dis = DataInputStream(istream)
+            val buff = ByteArray(1024)
+            dis.read(buff)
+            result = String(buff, Charset.forName("UTF-8"))
+            istream?.close()
+
+            socket?.close()
+        } catch (e : IOException) {
+            e.stackTrace
+        }
+        return result
     }
 }

@@ -33,16 +33,28 @@ class MainActivity : AppCompatActivity() {
         drawerToggle.syncState()
 
         if (savedInstanceState == null) {
-            val mapFragment = GoogleMapFragment()
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.content, mapFragment)
-                    .commit()
-        }
+            if (intent.hasExtra("id")) {
+                val id = intent.getStringExtra("id")
+                val fragment = LogFragment()
+                val args = Bundle()
+                args.putString("id", id)
+                fragment.arguments = args
+                fragmentManager.beginTransaction()
+                        .add(R.id.content, fragment)
+                        .commit()
+                toolbar.title = getString(R.string.menu_log)
+            } else {
+                val mapFragment = GoogleMapFragment()
+                fragmentManager.beginTransaction()
+                        .add(R.id.content, mapFragment)
+                        .commit()
+            }
 
+        }
 
         //ナビゲーションペインの設定
         nvView.setNavigationItemSelectedListener {
-            var fragment: android.support.v4.app.Fragment? = null
+            var fragment: Fragment? = null
 
             when (it.itemId) {
                 R.id.menu_map -> {
@@ -68,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (fragment != null) {
-                supportFragmentManager.beginTransaction()
+                fragmentManager.beginTransaction()
                         .replace(R.id.content, fragment)
                         .commit()
             }
