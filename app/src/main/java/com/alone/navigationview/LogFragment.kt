@@ -74,8 +74,11 @@ class LogFragment : Fragment() {
         rv.setHasFixedSize(true)
 
         if (arguments != null) {
-            list.add(arguments.getSerializable("log") as LogData)
-            list.distinct()
+            val newLog = arguments.getSerializable("log") as LogData
+            //すでに記録済みのスポットなら記録しない
+            if (list.all { it.title != newLog.title })
+                list.add(arguments.getSerializable("log") as LogData)
+            dataUtil.write(adapter.logList)
         }
     }
 }
