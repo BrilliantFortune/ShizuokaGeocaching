@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.app.Fragment
 import android.support.v4.content.PermissionChecker
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +39,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
     }
 
