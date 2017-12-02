@@ -49,7 +49,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
         //とりあえず静大
         map?.addMarker(MarkerOptions().position(su).title("Marker in Shizuoka University"))
         map?.moveCamera(CameraUpdateFactory.newLatLng(su))
-        map?.addCircle(CircleOptions().center(su).radius(200.0).strokeWidth(3.0f).strokeColor(-16711681).fillColor(2013331455))
+        map?.addCircle(CircleOptions().center(su).radius(50.0).strokeWidth(3.0f).strokeColor(-16711681).fillColor(2013331455))
 
 
         val assetmanager : AssetManager = this.context.resources.assets
@@ -72,7 +72,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback {
                     //マーカーの作成
                     map?.addMarker(MarkerOptions().position(lat).title(tit))
                     //円の作成
-                    map?.addCircle(CircleOptions().center(lat).radius(200.0).strokeWidth(3.0f).strokeColor(color.sc).fillColor(color.fc))
+                    map?.addCircle(CircleOptions().center(lat).radius(100.0).strokeWidth(3.0f).strokeColor(color.sc).fillColor(color.fc))
                 }
                 bufferedreader.close()
             }

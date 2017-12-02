@@ -23,7 +23,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 class ARActivity : ARActivity(), ARImageTrackableListener {
-    private val HOST = "192.168.3.20"
+    private val HOST = "192.168.11.111"
     private val PORT = 4869
     private var socket : Socket? = null
 
